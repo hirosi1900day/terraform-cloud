@@ -4,5 +4,7 @@ import {
 }
 
 resource "aws_vpc" "test_vpc" {
-  cidr_block = "172.31.0.0/16"
+  tags = {
+    name = "menta-vpc2"
+  }
 }
