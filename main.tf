@@ -10,7 +10,6 @@ terraform {
 
 provider "aws" {
   region = "ap-northeast-1"
-  profile =  "my-account"
 }
 
 resource "aws_sqs_queue" "my_queue" {
