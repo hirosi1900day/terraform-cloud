@@ -5,6 +5,6 @@ import {
 
 resource "aws_vpc" "test_vpc" {
   tags = {
-    name = "menta-vpc2"
+    Name = "menta-vpc2"
   }
 }
