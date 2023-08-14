@@ -26,12 +26,6 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_replication_filter"
   }
 
   parameter {
-    name         = "query_cache_size"
-    value        = "536870912"
-    apply_method = "immediate"
-  }
-
-  parameter {
     name         = "tx_isolation"
     value        = "READ-COMMITTED"
     apply_method = "immediate"
