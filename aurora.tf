@@ -1,4 +1,4 @@
-data "aws_rds_engine_version" "aurora_cluster_for_replication_filter" {
+data "aws_rds_engine_version" "aurora_cluster" {
   engine  = "aurora-mysql"
   version = "8.0.mysql_aurora.3.04.0"
 
@@ -10,7 +10,7 @@ data "aws_rds_engine_version" "aurora_cluster_for_replication_filter" {
 
 resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_replication_filter" {
   name        = "aurora-mysql"
-  family      = data.aws_rds_engine_version.aurora_cluster_for_replication_filter.parameter_group_family
+  family      = data.aws_rds_engine_version.aurora_cluster.parameter_group_family
   description = "aurora-mysql"
 
   parameter {
