@@ -15,7 +15,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_replication_filter"
 
   parameter {
     name         = "replicate-ignore-table"
-    value        = "db.users"
+    value        = "db.users3"
     apply_method = "immediate"
   }
 
@@ -55,11 +55,6 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_replication_filter"
     apply_method = "immediate"
   }
 
-  parameter {
-    name         = "connect_timeout"
-    value        = "30"
-    apply_method = "immediate"
-  }
 
   parameter {
     name         = "group_concat_max_len"
