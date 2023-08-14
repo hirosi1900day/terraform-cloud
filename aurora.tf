@@ -15,7 +15,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_replication_filter"
 
   parameter {
     name         = "replicate-ignore-table"
-    value        = ["users"]
+    value        = join(",", ["users"])
     apply_method = "immediate"
   }
 
