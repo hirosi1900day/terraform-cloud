@@ -14,6 +14,12 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_replication_filter"
   description = "aurora-mysql"
 
   parameter {
+    name         = "replicate-ignore-table"
+    value        = "users"
+    apply_method = "immediate"
+  }
+
+  parameter {
     name         = "character_set_client"
     value        = "utf8"
     apply_method = "immediate"
