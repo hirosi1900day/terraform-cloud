@@ -13,13 +13,13 @@ resource "aws_subnet" "elb-public1" {
   availability_zone = "ap-northeast-1a"
 
   tags = {
-    Name = "elb-public1" 
+    Name = "elb-public1"
   }
 }
 
 moved {
   from = aws_vpc.test_vpc
-  to = aws_vpc.test_vpc2
+  to   = aws_vpc.test_vpc2
 }
 
 # module "vpc" {
