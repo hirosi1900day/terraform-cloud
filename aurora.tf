@@ -57,7 +57,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_replication_filter"
 
   parameter {
     name         = "connect_timeout"
-    value        = "30"
+    value        = "20"
     apply_method = "immediate"
   }
 
