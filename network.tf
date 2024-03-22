@@ -1,4 +1,4 @@
-resource "aws_vpc" "test_vpc" {
+resource "aws_vpc" "test_vpc2" {
   enable_dns_hostnames = true
   enable_dns_support   = true
 
@@ -15,6 +15,11 @@ resource "aws_subnet" "elb-public1" {
   tags = {
     Name = "elb-public1" 
   }
+}
+
+moved {
+  from = aws_vpc.test_vpc
+  to = aws_vpc.test_vpc2
 }
 
 # module "vpc" {
