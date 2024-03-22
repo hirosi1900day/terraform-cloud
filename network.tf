@@ -8,7 +8,7 @@ resource "aws_vpc" "test_vpc2" {
 }
 
 resource "aws_subnet" "elb-public1" {
-  vpc_id            = aws_vpc.test_vpc.id
+  vpc_id            = aws_vpc.test_vpc2.id
   cidr_block        = "172.31.102.0/24"
   availability_zone = "ap-northeast-1a"
 
