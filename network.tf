@@ -32,8 +32,19 @@ data "terraform_remote_state" "vpc" {
   }
 }
 
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_http"
+  description = "state shared security group"
+  vpc_id      = data.terraform_remote_state.vpc.outputs.vpc_id
+
+  tags = {
+    Name = "allow_tls"
+  }
+}
+
+
 output "test" {
-  value = data.terraform_remote_state.vpc.outputs
+  value = data.terraform_remote_state.vpc.outputs.vpc_id
   description = "ステート共有確認"
 }
 
