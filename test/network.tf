@@ -19,3 +19,7 @@ resource "aws_vpc_security_group_ingress_rule" "allow_tls_ipv4" {
   ip_protocol       = "tcp"
   to_port           = 443
 }
+
+output "vpc_id" {
+    value = aws_vpc.main.id
+}

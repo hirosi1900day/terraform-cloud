@@ -22,6 +22,21 @@ moved {
   to   = aws_vpc.test_vpc2
 }
 
+data "terraform_remote_state" "vpc" {
+  backend = "remote"
+  config = {
+    organization = "test-horosi1900day"
+    workspaces = {
+      name = "terraform-cloud-state-test"
+    }
+  }
+}
+
+output "test" {
+  value = data.terraform_remote_state.vpc.outputs
+  description = "ステート共有確認"
+}
+
 # module "vpc" {
 #   source  = "app.terraform.io/test-horosi1900day/vpc/aws"
 #   version = "0.0.2"
