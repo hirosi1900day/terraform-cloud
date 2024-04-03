@@ -1,3 +1,13 @@
+data "terraform_remote_state" "vpc" {
+  backend = "remote"
+  config = {
+    organization = "test-horosi1900day"
+    workspaces = {
+      name = "terraform-cloud-state-test"
+    }
+  }
+}
+
 resource "aws_vpc" "test_vpc2" {
   enable_dns_hostnames = true
   enable_dns_support   = true
@@ -17,21 +27,6 @@ resource "aws_subnet" "elb-public1" {
   }
 }
 
-moved {
-  from = aws_vpc.test_vpc
-  to   = aws_vpc.test_vpc2
-}
-
-data "terraform_remote_state" "vpc" {
-  backend = "remote"
-  config = {
-    organization = "test-horosi1900day"
-    workspaces = {
-      name = "terraform-cloud-state-test"
-    }
-  }
-}
-
 resource "aws_security_group" "allow_tls" {
   name        = "allow_http"
   description = "state shared security group"
@@ -42,9 +37,13 @@ resource "aws_security_group" "allow_tls" {
   }
 }
 
+moved {
+  from = aws_vpc.test_vpc
+  to   = aws_vpc.test_vpc2
+}
 
 output "test" {
-  value = data.terraform_remote_state.vpc.outputs.vpc_id
+  value       = data.terraform_remote_state.vpc.outputs.vpc_id
   description = "ステート共有確認"
 }
 
