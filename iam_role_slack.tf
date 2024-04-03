@@ -1,10 +1,12 @@
-data "aws_cloudwatch_log_group" "slack-aws-handler" {
-  name = "/aws/lambda/aws-slack"
-}
+# 本当はdata属性で取得したいが、samを停止することもあるのでそれを考慮して、cloudwatchのロググループのarnを直接指定する
+# data "aws_cloudwatch_log_group" "slack-aws-handler" {
+#   name = "/aws/lambda/aws-handler"
+# }
 
-data "aws_sqs_queue" "slack-aws" {
-  name = "test-aws.fifo"
-}
+# こちらも上と同様に、samを停止することもあるので、sqsのarnを直接指定する
+# data "aws_sqs_queue" "slack-aws" {
+#   name = "test-aws.fifo"
+# }
 
 data "aws_iam_policy_document" "assume_slack" {
   statement {
@@ -47,7 +49,7 @@ data "aws_iam_policy_document" "slack" {
       "sqs:GetQueueAttributes",
       "sqs:DeleteMessage",
     ]
-    resources = [data.aws_sqs_queue.slack-aws.arn]
+    resources = ["arn:aws:sqs:ap-northeast-1:572919087216:test-aws.fifo"]
   }
 
   statement {
@@ -55,7 +57,7 @@ data "aws_iam_policy_document" "slack" {
       "logs:CreateLogStream",
       "logs:PutLogEvents",
     ]
-    resources = [data.aws_cloudwatch_log_group.slack-aws-handler.arn]
+    resources = ["arn:aws:logs:ap-northeast-1:572919087216:log-group:/aws/lambda/aws-handler:*"]
   }
 }
 
