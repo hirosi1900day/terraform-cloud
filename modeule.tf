@@ -3,5 +3,5 @@ module "firehose-ecs-logs" {
   version = "0.0.2"
   # insert required variables here
 
-  s3_bucket = "code-build-572919087216"
+  s3_bucket = aws_s3_bucket.example
 }
