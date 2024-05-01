@@ -114,7 +114,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_test" {
 
   parameter {
     name         = "slow_launch_time"
-    value        = "1"
+    value        = "0.001"
     apply_method = "immediate"
   }
 
@@ -177,7 +177,7 @@ resource "aws_rds_cluster" "rds_cluster_for_test" {
   # vpc_security_group_ids          = [aws_security_group.rds.id]
   database_name                   = "mydb"
   master_username                 = "foo"
-  master_password                 = "bar"
+  master_password                 = "barcdacsd8932csdcd"
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_mysql_for_test.name
   enabled_cloudwatch_logs_exports = [
     "error",
