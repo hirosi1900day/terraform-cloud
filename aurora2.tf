@@ -181,7 +181,8 @@ resource "aws_rds_cluster" "rds_cluster_for_test" {
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_mysql_for_test.name
   enabled_cloudwatch_logs_exports = [
     "error",
-    "slowquery"
+    "slowquery",
+    "general"
   ]
 
   tags = {
