@@ -133,7 +133,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_test" {
   # TODO: aurora v3へアップグレード時にtransaction_isolationに変更する必要がある
   #       https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Reference.ParameterGroups.html
   parameter {
-    name         = "tx_isolation"
+    name         = "transaction_isolation"
     value        = "READ-COMMITTED"
     apply_method = "immediate"
   }
