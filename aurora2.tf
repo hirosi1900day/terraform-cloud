@@ -114,7 +114,7 @@ resource "aws_rds_cluster_parameter_group" "aurora_mysql_for_test" {
 
   parameter {
     name         = "slow_launch_time"
-    value        = "0.001"
+    value        = "1"
     apply_method = "immediate"
   }
 
