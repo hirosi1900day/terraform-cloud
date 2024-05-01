@@ -166,7 +166,7 @@ resource "aws_rds_cluster" "rds_cluster_for_test" {
   engine_version                  = data.aws_rds_engine_version.aurora_cluster_for_test.version
   cluster_identifier              = "test-cluster-for-test"
   storage_encrypted               = true
-  kms_key_id                      = aws_kms_key.rds.arn
+  # kms_key_id                      = aws_kms_key.rds.arn
   backup_retention_period         = 1
   preferred_backup_window         = "17:00-17:30"
   port                            = 3306
@@ -174,7 +174,7 @@ resource "aws_rds_cluster" "rds_cluster_for_test" {
   deletion_protection             = false
   allow_major_version_upgrade     = true
   apply_immediately               = true
-  vpc_security_group_ids          = [aws_security_group.rds.id]
+  # vpc_security_group_ids          = [aws_security_group.rds.id]
   db_cluster_parameter_group_name = aws_rds_cluster_parameter_group.aurora_mysql_for_test.name
   enabled_cloudwatch_logs_exports = [
     "error",
