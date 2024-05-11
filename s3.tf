@@ -21,6 +21,7 @@ module "s3_bucket" {
 
   bucket = "cdacdscsacsacdcsdmy-tf-example-bucket"
   acl    = "private"
+  attach_public_policy = false
 
   control_object_ownership = true
   object_ownership         = "BucketOwnerPreferred"
