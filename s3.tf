@@ -1,32 +1,3 @@
-# S3 バケットの定義 (CloudFrontのログ用)
-resource "aws_s3_bucket" "cloudfront_logs" {
-  bucket = "hogegretgeegae-cloudfront-logs"
-
-  tags = {
-    Name        = "hogegretgeegae-cloudfront-logs"
-    Environment = "test"
-  }
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_logs" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-
-  rule {
-    id     = "log_transition"
-    status = "Enabled"
-
-    transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
-    }
-
-    transition {
-      days          = 1095
-      storage_class = "GLACIER"
-    }
-  }
-}
-
 # S3 バケットの定義 (LBのログ用)
 resource "aws_s3_bucket" "lb_logs" {
   bucket = "hogegretgeegae-lb-logs"
@@ -75,6 +46,24 @@ resource "aws_s3_bucket_lifecycle_configuration" "lb_logs" {
     transition {
       days          = 90
       storage_class = "GLACIER"
+    }
+  }
+}
+
+resource "aws_s3_bucket_acl" "lb_logs" {
+  bucket = aws_s3_bucket.lb_logs.id
+  access_control_policy {
+    /* awslogsdeliveryの対応をすると、自身のアカウントIDも許可しないと差分が出るようになった */
+    grant {
+      grantee {
+        id   = data.aws_canonical_user_id.self.id
+        type = "CanonicalUser"
+      }
+      permission = "FULL_CONTROL"
+    }
+
+    owner {
+      id = data.aws_canonical_user_id.self.id
     }
   }
 }
