@@ -1,14 +1,4 @@
-# resource "aws_s3_bucket" "example" {
-#   bucket = "hirosi1900dayhogehoge"
-
-#   tags = {
-#     Name        = "test"
-#     Environment = "Dev"
-#   }
-# }
-/* cloudfrontのログ保管用 */
-data "aws_canonical_user_id" "self" {}
-
+# S3 バケットの定義 (CloudFrontのログ用)
 resource "aws_s3_bucket" "cloudfront_logs" {
   bucket = "hogegretgeegae-cloudfront-logs"
 
@@ -18,13 +8,13 @@ resource "aws_s3_bucket" "cloudfront_logs" {
   }
 }
 
+# CloudFront ログ用バケットポリシー
 data "aws_iam_policy_document" "cloudfront_logs" {
   statement {
     effect = "Allow"
 
     principals {
-      type = "AWS"
-
+      type        = "AWS"
       identifiers = ["*"]
     }
 
@@ -32,7 +22,7 @@ data "aws_iam_policy_document" "cloudfront_logs" {
       "s3:GetObject",
     ]
 
-    resources = ["arn:aws:s3:::hogegretgeegae-cloudfront-logs"]
+    resources = ["arn:aws:s3:::hogegretgeegae-cloudfront-logs/*"]  # バケット内のすべてのオブジェクトを指定
   }
 }
 
@@ -60,12 +50,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_logs" {
   }
 }
 
-resource "aws_s3_bucket_acl" "cloudfront_logs" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-  acl    = "private"
-}
-
-/* LBのログ保管用 */
+# S3 バケットの定義 (LBのログ用)
 resource "aws_s3_bucket" "lb_logs" {
   bucket = "hogegretgeegae-lb-logs"
 
@@ -75,26 +60,21 @@ resource "aws_s3_bucket" "lb_logs" {
   }
 }
 
-# LB のアクセスログを保存するための S3 バケットのポリシー
+# LBのアクセスログ用ポリシー
 data "aws_iam_policy_document" "lb_logs" {
-  # get, putしか与えない
   statement {
     effect = "Allow"
 
     principals {
-      type = "AWS"
-
-      identifiers = [
-        # https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/classic/enable-access-logs.html
-        "*", # ap-northeast-1
-      ]
+      type        = "Service"
+      identifiers = ["delivery.logs.amazonaws.com"]  # Elastic Load Balancing のログサービス
     }
 
     actions = [
       "s3:PutObject",
     ]
 
-    resources = ["arn:aws:s3:::hogegretgeegae-lb-logs/*"]
+    resources = ["arn:aws:s3:::hogegretgeegae-lb-logs/*"]  # バケット内のすべてのオブジェクトを指定
   }
 }
 
@@ -119,18 +99,5 @@ resource "aws_s3_bucket_lifecycle_configuration" "lb_logs" {
       days          = 90
       storage_class = "GLACIER"
     }
-  }
-}
-
-resource "aws_s3_bucket_acl" "lb_logs" {
-  bucket = aws_s3_bucket.lb_logs.id
-  acl    = "private"
-}
-
-resource "aws_s3_bucket" "rawlog" {
-  bucket = "hogegretgeegae-rawlog"
-
-  tags = {
-    Name = "rawlog"
   }
 }
