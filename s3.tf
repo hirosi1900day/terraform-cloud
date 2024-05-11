@@ -63,29 +63,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_logs" {
 
 resource "aws_s3_bucket_acl" "cloudfront_logs" {
   bucket = aws_s3_bucket.cloudfront_logs.id
-  access_control_policy {
-    /* CloudFrontからログを保存するため、awslogsdeliveryのアカウントIDを許可する */
-     grant {
-      grantee {
-        type = "Group"
-        uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-      }
-      permission = "READ_ACP"
-    }
-
-    grant {
-      grantee {
-        type = "Group"
-        uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-      }
-      permission = "WRITE"
-    }
-
-
-    owner {
-      id = data.aws_canonical_user_id.self.id
-    }
-  }
+  acl    = "private"
 }
 
 /* LBのログ保管用 */
@@ -147,28 +125,7 @@ resource "aws_s3_bucket_lifecycle_configuration" "lb_logs" {
 
 resource "aws_s3_bucket_acl" "lb_logs" {
   bucket = aws_s3_bucket.lb_logs.id
-  access_control_policy {
-    /* ALBからログを保存するため、awslogsdeliveryのアカウントIDを許可する */
-    grant {
-      grantee {
-        type = "Group"
-        uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-      }
-      permission = "READ_ACP"
-    }
-
-    grant {
-      grantee {
-        type = "Group"
-        uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
-      }
-      permission = "WRITE"
-    }
-
-    owner {
-      id = data.aws_canonical_user_id.self.id
-    }
-  }
+  acl    = "private"
 }
 
 resource "aws_s3_bucket" "rawlog" {
