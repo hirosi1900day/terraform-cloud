@@ -11,3 +11,7 @@ terraform {
 provider "aws" {
   region = "ap-northeast-1"
 }
+
+module "global" {
+  source = "./modules/global"
+}

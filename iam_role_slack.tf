@@ -8,71 +8,71 @@
 #   name = "test-aws.fifo"
 # }
 
-data "aws_iam_policy_document" "assume_slack" {
-  statement {
-    actions = ["sts:AssumeRole"]
+# data "aws_iam_policy_document" "assume_slack" {
+#   statement {
+#     actions = ["sts:AssumeRole"]
 
-    principals {
-      type = "Service"
+#     principals {
+#       type = "Service"
 
-      identifiers = [
-        "lambda.amazonaws.com",
-      ]
-    }
-  }
-}
+#       identifiers = [
+#         "lambda.amazonaws.com",
+#       ]
+#     }
+#   }
+# }
 
-data "aws_iam_policy_document" "slack" {
-  # AWS Account intra の slack_role から各 AWS Account へスイッチする権限
-  statement {
-    actions = [
-      "sts:AssumeRole",
-      "sts:GetAccessKeyInfo",
-      "sts:GetCallerIdentity",
-      "sts:GetSessionToken",
-    ]
-    resources = ["*"] # trivy:ignore:AWS099
-  }
+# data "aws_iam_policy_document" "slack" {
+#   # AWS Account intra の slack_role から各 AWS Account へスイッチする権限
+#   statement {
+#     actions = [
+#       "sts:AssumeRole",
+#       "sts:GetAccessKeyInfo",
+#       "sts:GetCallerIdentity",
+#       "sts:GetSessionToken",
+#     ]
+#     resources = ["*"] # trivy:ignore:AWS099
+#   }
 
-  # 個々のユーザのスイッチ可能なロール一覧を取得する際に必要な権限
-  statement {
-    actions = [
-      "iam:ListUserPolicies",
-      "iam:GetUserPolicy",
-    ]
-    resources = ["*"] # trivy:ignore:AWS099
-  }
+#   # 個々のユーザのスイッチ可能なロール一覧を取得する際に必要な権限
+#   statement {
+#     actions = [
+#       "iam:ListUserPolicies",
+#       "iam:GetUserPolicy",
+#     ]
+#     resources = ["*"] # trivy:ignore:AWS099
+#   }
 
-  statement {
-    actions = [
-      "sqs:ReceiveMessage",
-      "sqs:GetQueueAttributes",
-      "sqs:DeleteMessage",
-    ]
-    resources = ["arn:aws:sqs:ap-northeast-1:572919087216:test-aws.fifo"]
-  }
+#   statement {
+#     actions = [
+#       "sqs:ReceiveMessage",
+#       "sqs:GetQueueAttributes",
+#       "sqs:DeleteMessage",
+#     ]
+#     resources = ["arn:aws:sqs:ap-northeast-1:572919087216:test-aws.fifo"]
+#   }
 
-  statement {
-    actions = [
-      "logs:CreateLogStream",
-      "logs:PutLogEvents",
-    ]
-    resources = ["arn:aws:logs:ap-northeast-1:572919087216:log-group:/aws/lambda/aws-handler:*"]
-  }
-}
+#   statement {
+#     actions = [
+#       "logs:CreateLogStream",
+#       "logs:PutLogEvents",
+#     ]
+#     resources = ["arn:aws:logs:ap-northeast-1:572919087216:log-group:/aws/lambda/aws-handler:*"]
+#   }
+# }
 
-resource "aws_iam_role" "slack_role" {
-  name               = "slack_role"
-  path               = "/"
-  assume_role_policy = data.aws_iam_policy_document.assume_slack.json
-}
+# resource "aws_iam_role" "slack_role" {
+#   name               = "slack_role"
+#   path               = "/"
+#   assume_role_policy = data.aws_iam_policy_document.assume_slack.json
+# }
 
-resource "aws_iam_role_policy" "slack_policy" {
-  name   = "slack_policy"
-  role   = aws_iam_role.slack_role.id
-  policy = data.aws_iam_policy_document.slack.json
-}
+# resource "aws_iam_role_policy" "slack_policy" {
+#   name   = "slack_policy"
+#   role   = aws_iam_role.slack_role.id
+#   policy = data.aws_iam_policy_document.slack.json
+# }
 
-output "slack_role_arn" {
-  value = aws_iam_role.slack_role.arn
-}
+# output "slack_role_arn" {
+#   value = aws_iam_role.slack_role.arn
+# }
