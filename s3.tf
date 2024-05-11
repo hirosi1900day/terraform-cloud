@@ -8,29 +8,6 @@ resource "aws_s3_bucket" "cloudfront_logs" {
   }
 }
 
-# CloudFront ログ用バケットポリシー
-data "aws_iam_policy_document" "cloudfront_logs" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "AWS"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:GetObject",
-    ]
-
-    resources = ["arn:aws:s3:::hogegretgeegae-cloudfront-logs/*"]  # バケット内のすべてのオブジェクトを指定
-  }
-}
-
-resource "aws_s3_bucket_policy" "cloudfront_logs" {
-  bucket = aws_s3_bucket.cloudfront_logs.id
-  policy = data.aws_iam_policy_document.cloudfront_logs.json
-}
-
 resource "aws_s3_bucket_lifecycle_configuration" "cloudfront_logs" {
   bucket = aws_s3_bucket.cloudfront_logs.id
 
