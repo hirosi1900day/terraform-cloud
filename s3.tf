@@ -151,19 +151,18 @@ resource "aws_s3_bucket_acl" "lb_logs" {
     /* ALBからログを保存するため、awslogsdeliveryのアカウントIDを許可する */
     grant {
       grantee {
-        id   = module.global.aws_logs_delivery_id
-        type = "CanonicalUser"
+        type = "Group"
+        uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
       }
-      permission = "FULL_CONTROL"
+      permission = "READ_ACP"
     }
 
-    /* awslogsdeliveryの対応をすると、自身のアカウントIDも許可しないと差分が出るようになった */
     grant {
       grantee {
-        id   = data.aws_canonical_user_id.self.id
-        type = "CanonicalUser"
+        type = "Group"
+        uri  = "http://acs.amazonaws.com/groups/s3/LogDelivery"
       }
-      permission = "FULL_CONTROL"
+      permission = "WRITE"
     }
 
     owner {
