@@ -29,8 +29,7 @@ data "aws_iam_policy_document" "cloudfront_logs" {
     }
 
     actions = [
-      "s3:GetBucketAcl",
-      "s3:PutBucketAcl",
+      "s3:GetObject",
     ]
 
     resources = ["arn:aws:s3:::hogegretgeegae-cloudfront-logs"]
