@@ -27,7 +27,7 @@ resource "aws_s3_bucket_acl" "example" {
 # }
 
 # TODO: stateの移行が完了したら削除する
-moved {
-  from = aws_s3_bucket.example
-  to   = module.s3_bucket
-}
+# moved {
+#   from = aws_s3_bucket.example
+#   to   = module.s3_bucket
+# }
