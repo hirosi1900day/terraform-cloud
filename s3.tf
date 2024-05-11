@@ -1,73 +1,17 @@
-# S3 バケットの定義 (LBのログ用)
-resource "aws_s3_bucket" "lb_logs" {
-  bucket = "hogegretgeegae-lb-logs"
-
-  tags = {
-    Name        = "hogegretgeegae-lb-logs"
-    Environment = "test"
-  }
+resource "aws_s3_bucket" "example" {
+  bucket = "cdacdscsacsacdcsdmy-tf-example-bucket"
 }
 
-# LBのアクセスログ用ポリシー
-data "aws_iam_policy_document" "lb_logs" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["delivery.logs.amazonaws.com"]  # Elastic Load Balancing のログサービス
-    }
-
-    actions = [
-      "s3:PutObject",
-      "S3:PutBucketAcl",
-      "s3:GetBucketAcl",
-    ]
-
-    resources = ["arn:aws:s3:::hogegretgeegae-lb-logs/*"]  # バケット内のすべてのオブジェクトを指定
-  }
-}
-
-data "aws_canonical_user_id" "self" {}
-
-resource "aws_s3_bucket_policy" "lb_logs" {
-  bucket = aws_s3_bucket.lb_logs.id
-  policy = data.aws_iam_policy_document.lb_logs.json
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "lb_logs" {
-  bucket = aws_s3_bucket.lb_logs.id
-
+resource "aws_s3_bucket_ownership_controls" "example" {
+  bucket = aws_s3_bucket.example.id
   rule {
-    id     = "log_transition"
-    status = "Enabled"
-
-    transition {
-      days          = 30
-      storage_class = "STANDARD_IA"
-    }
-
-    transition {
-      days          = 90
-      storage_class = "GLACIER"
-    }
+    object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_acl" "lb_logs" {
-  bucket = aws_s3_bucket.lb_logs.id
-  access_control_policy {
-    /* awslogsdeliveryの対応をすると、自身のアカウントIDも許可しないと差分が出るようになった */
-    grant {
-      grantee {
-        id   = data.aws_canonical_user_id.self.id
-        type = "CanonicalUser"
-      }
-      permission = "FULL_CONTROL"
-    }
+resource "aws_s3_bucket_acl" "example" {
+  depends_on = [aws_s3_bucket_ownership_controls.example]
 
-    owner {
-      id = data.aws_canonical_user_id.self.id
-    }
-  }
+  bucket = aws_s3_bucket.example.id
+  acl    = "private"
 }
