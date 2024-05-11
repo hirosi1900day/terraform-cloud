@@ -20,6 +20,8 @@ data "aws_iam_policy_document" "lb_logs" {
 
     actions = [
       "s3:PutObject",
+      "S3:PutBucketAcl",
+      "s3:GetBucketAcl",
     ]
 
     resources = ["arn:aws:s3:::hogegretgeegae-lb-logs/*"]  # バケット内のすべてのオブジェクトを指定
