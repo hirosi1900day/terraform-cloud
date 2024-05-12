@@ -27,28 +27,28 @@
 #   object_ownership         = "BucketOwnerPreferred"
 # }
 
-module "s3_bucket" {
-  source = "./modules/s3"
+# module "s3_bucket" {
+#   source = "./modules/s3"
 
-  bucket = "cdacdscsacsacdcsdmy-tf-example-bucket"
-  acl    = "private"
-  attach_public_policy = false
+#   bucket = "cdacdscsacsacdcsdmy-tf-example-bucket"
+#   acl    = "private"
+#   attach_public_policy = false
 
-  control_object_ownership = true
-  object_ownership         = "BucketOwnerPreferred"
-}
+#   control_object_ownership = true
+#   object_ownership         = "BucketOwnerPreferred"
+# }
 
-moved {
-  to = module.s3_bucket.aws_s3_bucket.this[0]
-  from = aws_s3_bucket.example
-}
+# moved {
+#   to = module.s3_bucket.aws_s3_bucket.this[0]
+#   from = aws_s3_bucket.example
+# }
 
-moved {
-  to = module.s3_bucket.aws_s3_bucket_acl.this[0]
-  from = aws_s3_bucket_acl.example
-}
+# moved {
+#   to = module.s3_bucket.aws_s3_bucket_acl.this[0]
+#   from = aws_s3_bucket_acl.example
+# }
 
-moved {
-  to = module.s3_bucket.aws_s3_bucket_ownership_controls.this
-  from = aws_s3_bucket_ownership_controls.example
-}
+# moved {
+#   to = module.s3_bucket.aws_s3_bucket_ownership_controls.this
+#   from = aws_s3_bucket_ownership_controls.example
+# }
